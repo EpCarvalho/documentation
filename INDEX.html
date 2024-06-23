@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assistir Filme Grátis</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000;
+            color: #fff;
+        }
+        video {
+            width: 80%;
+            max-width: 800px;
+        }
+        #timer {
+            margin-top: 20px;
+            font-size: 1.5em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Filme do Grupo</h1>
+    <video id="filme" controls>
+        <source src="seu-video.mp4" type="video/mp4">
+        Seu navegador não suporta a reprodução de vídeo.
+    </video>
+    <div id="timer">Tempo restante: 60:00</div>
+
+    <script>
+        const video = document.getElementById('filme');
+        const timerDisplay = document.getElementById('timer');
+        let duration = 60 * 60; // 60 minutos em segundos
+        let interval;
+
+        function updateTimer() {
+            let minutes = Math.floor(duration / 60);
+            let seconds = duration % 60;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            timerDisplay.textContent = `Tempo restante: ${minutes}:${seconds}`;
+            if (duration > 0) {
+                duration--;
+            } else {
+                clearInterval(interval);
+                video.pause();
+                alert('O tempo de exibição terminou.');
+            }
+        }
+
+        video.addEventListener('play', () => {
+            if (!interval) {
+                interval = setInterval(updateTimer, 1000);
+            }
+        });
+
+        video.addEventListener('pause', () => {
+            clearInterval(interval);
+            interval = null;
+        });
+
+        video.addEventListener('ended', () => {
+            clearInterval(interval);
+            interval = null;
+        });
+
+        // Inicializa o timer
+        updateTimer();
+    </script>
+</body>
+</html>
